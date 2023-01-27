@@ -2,7 +2,7 @@
 
 {% block content %}
 <ul class="list-articles">
-    {% for p in object_list %}
+    {% for p in posts %}
     <li>
         <div class="article-panel">
             <p class="first">Category: {{p.type}}</p>
@@ -17,6 +17,8 @@
         {{p.content|linebreaks|truncatewords:50}}
         {% endautoescape %}
         <div class="clear"></div>
+        <p class="link-read-post"><a href="{{ p.get_absolute_url }}">Read more</a></p>
+
     </li>
     {% endfor %}
 </ul>

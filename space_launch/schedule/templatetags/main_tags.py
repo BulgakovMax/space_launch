@@ -4,7 +4,7 @@ from schedule.models import *
 register = template.Library()
 
 menu = [{'title': "About", 'url_name': 'about'},
-        {'title': "Add article", 'url_name': 'add_page'},
+        {'title': "Add rocket", 'url_name': 'add_page'},
         {'title': "Contacts", 'url_name': 'contact'},
         {'title': "Log in", 'url_name': 'login'}
         ]

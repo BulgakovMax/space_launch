@@ -1,10 +1,8 @@
-from django.urls import path, include
-
+from django.urls import path
 from .views import *
 
 urlpatterns = [
     path('', ScheduleHome.as_view(), name='home'),
-    # path('', index, name='home'),
     path('rockets', rockets),
     path('about/', about, name='about'),
     path('addpage/', addpage, name='add_page'),
