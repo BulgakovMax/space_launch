@@ -5,8 +5,8 @@
     {% for p in posts %}
     <li>
         <div class="article-panel">
-            <p class="first">Category: {{p.type}}</p>
-            <p class="last">Launch Date: {{p.time_launch|date:"d-m-Y H:i:s"}}</p>
+            <p class="first">Launch Date: {{p.time_launch|date:"d-m-Y H:i:s"}}</p>
+            <p class="last">Type of rocket: {{p.type}}</p>
         </div>
 
         {% if p.photo %}
