@@ -12,8 +12,8 @@ class Rocket(models.Model):
     time_update = models.DateTimeField(auto_now=True)
     is_published = models.BooleanField(default=True)
     type = models.ForeignKey('Type', on_delete=models.PROTECT, verbose_name='Type')
-    # location = models.ForeignKey('Location', on_delete=models.PROTECT, verbose_name='Location')
-
+    location = models.ForeignKey('Location', null=True, on_delete=models.PROTECT, verbose_name='Location')
+    agency = models.ForeignKey('Agency', null=True, on_delete=models.PROTECT, verbose_name='Agency')
 
     def __str__(self):
         return self.title
@@ -38,12 +38,24 @@ class Type(models.Model):
         return reverse('type', kwargs={'type_slug': self.slug})
 
 
-# class Location(models.Model):
-#     name = models.CharField(max_length=100, db_index=True)
-#     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL")
-#
-#     def __str__(self):
-#         return self.name
-#
-#     def get_absolute_url(self):
-#         return reverse('location', kwargs={'type_slug': self.slug})
+class Location(models.Model):
+    name = models.CharField(max_length=100, db_index=True)
+    slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL")
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('location', kwargs={'location_slug': self.slug})
+
+
+class Agency(models.Model):
+    name = models.CharField(max_length=100, db_index=True)
+    slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL")
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('agency', kwargs={'agency_slug': self.slug})
+

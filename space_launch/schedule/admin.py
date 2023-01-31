@@ -4,7 +4,7 @@ from .models import *
 
 
 class RocketAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'type', 'time_launch', 'is_published')
+    list_display = ('id', 'title', 'type', 'location', 'agency', 'time_launch', 'is_published')
     list_display_links = ('id', 'title')
     search_fields = ('id', 'content', 'time_launch')
     list_editable = ('is_published',)
@@ -19,5 +19,22 @@ class TypeAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
 
 
+class LocationAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'slug')
+    list_display_links = ('id', 'name', 'slug')
+    search_fields = ('name',)
+    prepopulated_fields = {"slug": ("name",)}
+
+
+class AgencyAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'slug')
+    list_display_links = ('id', 'name', 'slug')
+    search_fields = ('name',)
+    prepopulated_fields = {"slug": ("name",)}
+
+
 admin.site.register(Rocket, RocketAdmin)
 admin.site.register(Type, TypeAdmin)
+admin.site.register(Location, LocationAdmin)
+admin.site.register(Agency, AgencyAdmin)
+
