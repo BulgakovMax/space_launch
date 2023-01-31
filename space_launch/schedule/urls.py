@@ -3,9 +3,11 @@ from .views import *
 
 urlpatterns = [
     path('', ScheduleHome.as_view(), name='home'),
-    path('rockets', rockets),
     path('about/', about, name='about'),
     path('addpage/', addpage, name='add_page'),
+    path('rockets/', rockets, name='rockets'),
+    path('locations/', locations, name='locations'),
+    path('agencies/', agencies, name='agencies'),
     path('contact/', contacts, name='contact'),
     path('login/', login, name='login'),
     path('post/<slug:post_slug>/', show_post, name='post'),

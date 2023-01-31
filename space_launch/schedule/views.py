@@ -13,7 +13,6 @@ from .models import *
 from .utils import *
 
 
-
 # class ScheduleHome(ListView):
 #     model = Rocket
 #     template_name = 'schedule/index.html'
@@ -26,20 +25,27 @@ class ScheduleHome(DataMixin, ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Главная страница")
+        c_def = self.get_user_context(title="Main page")
         return dict(list(context.items()) + list(c_def.items()))
 
     def get_queryset(self):
         return Rocket.objects.filter(is_published=True).select_related('type')
 
 
-
 def about(request):
     return render(request, 'schedule/about.html', {'title': 'About'})
 
 
-def rockets(request):
-    return render(request, 'schedule/index.html', {'title': 'Rockets'})
+def rockets(request, ):
+    return render(request, 'schedule/rockets.html', {'title': 'rockets'})
+
+
+def locations(request):
+    return render(request, 'schedule/locations.html', {'title': 'Locations'})
+
+
+def agencies(request):
+    return render(request, 'schedule/agencies.html', {'title': 'Agencies'})
 
 
 def contacts(request):
@@ -47,7 +53,7 @@ def contacts(request):
 
 
 def login(request):
-    return render(request, 'schedule/about.html', {'title': 'Log in'})
+    return render(request, 'schedule/login.html', {'title': 'Log in'})
 
 
 def addpage(request):
