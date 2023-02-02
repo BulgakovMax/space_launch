@@ -1,8 +1,22 @@
+{% extends 'schedule/base.html' %}
+
+{% block content %}
 
 <h1>{{post.title}}</h1>
+<ul class="list-articles">
+    <li>
+        {% if post.photo %}
+        <p><img class="img-article-left " src="{{post.photo.url}} " style="width:150px;height:300px;"></p>
+        {% endif %}
+        <div class="article-panel">
+            <p class="first">Launch Date: {{post.time_launch|date:"d-m-Y H:i:s"}}</p>
+            <br>
+            <p class="first">Location: {{post.location}}</p>
+            <br>
+            <p class="first">Type of rocket: {{post.type}}</p>
+        </div>
+        {{post.content|linebreaks}}
+    </li>
+</ul>
 
-{% if post.photo %}
-<p> <img class="img-article-left " src="{{post.photo.url}} " style="width:150px;height:300px;"></p>
-{% endif %}
-
-{{post.content|linebreaks}}
+{% endblock %}

@@ -40,12 +40,18 @@ def rockets(request, ):
     return render(request, 'schedule/rockets.html', {'title': 'rockets'})
 
 
-def locations(request):
-    return render(request, 'schedule/locations.html', {'title': 'Locations'})
+def locations(request, ):
+    from schedule.models import Location
+    locations = Location.objects.order_by('name').values()
+
+    return render(request, 'schedule/locations.html', {'title': 'Location', 'locations': locations})
 
 
 def agencies(request):
-    return render(request, 'schedule/agencies.html', {'title': 'Agencies'})
+    from schedule.models import Agency
+    agencies = Agency.objects.order_by('name').values()
+
+    return render(request, 'schedule/agencies.html', {'title': 'Agencies', 'agencies': agencies})
 
 
 def contacts(request):
@@ -78,6 +84,18 @@ def show_post(request, post_slug):
     }
 
     return render(request, 'schedule/post.html', context=context)
+
+
+def show_location(request, location_slug):
+    from schedule.models import Location
+    location = get_object_or_404(Location, slug=location_slug)
+
+    context = {
+        'location': location,
+        'title': location.name,
+    }
+
+    return render(request, 'schedule/location.html', context=context)
 
 
 def show_type(request, type_slug):

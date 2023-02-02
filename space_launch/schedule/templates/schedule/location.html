@@ -1,0 +1,13 @@
+{% extends 'schedule/base.html' %}
+
+{% block content %}
+
+<h1>{{location.name}}</h1>
+<ul class="list-articles">
+    <li>
+
+        {{location.name|linebreaks}}
+    </li>
+</ul>
+
+{% endblock %}
