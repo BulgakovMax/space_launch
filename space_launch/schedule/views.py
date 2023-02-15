@@ -13,11 +13,6 @@ from .models import *
 from .utils import *
 
 
-# class ScheduleHome(ListView):
-#     model = Rocket
-#     template_name = 'schedule/index.html'
-
-
 class ScheduleHome(DataMixin, ListView):
     model = Rocket
     template_name = 'schedule/index.html'
@@ -36,15 +31,15 @@ def about(request):
     return render(request, 'schedule/about.html', {'title': 'About'})
 
 
-def rockets(request, ):
+def rockets(request):
     return render(request, 'schedule/rockets.html', {'title': 'rockets'})
 
 
-def locations(request, ):
+def locations(request):
     from schedule.models import Location
     locations = Location.objects.order_by('name').values()
 
-    return render(request, 'schedule/locations.html', {'title': 'Location', 'locations': locations})
+    return render(request, 'schedule/locations.html', {'title': 'Locations', 'locations': locations})
 
 
 def agencies(request):
@@ -58,8 +53,38 @@ def contacts(request):
     return render(request, 'schedule/contacts.html', {'title': 'Contacts'})
 
 
-def login(request):
-    return render(request, 'schedule/login.html', {'title': 'Log in'})
+class RegisterUser(DataMixin, CreateView):
+    form_class = RegisterUserForm
+    template_name = 'schedule/register.html'
+    success_url = reverse_lazy('login')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Register")
+        return dict(list(context.items()) + list(c_def.items()))
+
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+        return redirect('home')
+
+
+class LoginUser(DataMixin, LoginView):
+    form_class = LoginUserForm
+    template_name = 'schedule/login.html'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Authorization")
+        return dict(list(context.items()) + list(c_def.items()))
+
+    def get_success_url(self):
+        return reverse_lazy('home')
+
+
+def logout_user(request):
+    logout(request)
+    return redirect('login')
 
 
 def addpage(request):
@@ -86,9 +111,9 @@ def show_post(request, post_slug):
     return render(request, 'schedule/post.html', context=context)
 
 
-def show_location(request, location_slug):
+def show_location(request, slug):
     from schedule.models import Location
-    location = get_object_or_404(Location, slug=location_slug)
+    location = get_object_or_404(Location, slug=slug)
 
     context = {
         'location': location,
@@ -98,20 +123,66 @@ def show_location(request, location_slug):
     return render(request, 'schedule/location.html', context=context)
 
 
-def show_type(request, type_slug):
-    type = Type.objects.filter(slug=type_slug)
-    posts = Rocket.objects.filter(type_id=type[0].id)
-
-    if len(posts) == 0:
-        raise Http404()
+def show_agency(request, slug):
+    from schedule.models import Agency
+    agency = get_object_or_404(Agency, slug=slug)
 
     context = {
-        'posts': posts,
-        'title': 'Showing by types',
-        'type_selected': type[0].id,
+        'agency': agency,
+        'title': agency.name,
     }
-    return render(request, 'schedule/index.html', context=context)
+
+    return render(request, 'schedule/agency.html', context=context)
 
 
+# class ShowLocation(DataMixin, ListView):
+#     model = Location
+#     template_name = 'schedule/location.html'
+#     context_object_name = 'location'
+#     # allow_empty = False
+#
+#     def get_queryset(self):
+#         return Location.objects.filter(name=self.kwargs['location_slug']).select_related('name')
+#
+#     def get_context_data(self, *, object_list=None, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         c = Location.objects.get(slug=self.kwargs['location_slug'])
+#         c_def = self.get_user_context(title='Location' + str(c.name),
+#                                       type_selected=c.pk)
+#         return dict(list(context.items()) + list(c_def.items()))
+
+
+class RocketType(DataMixin, ListView):
+    model = Rocket
+    template_name = 'schedule/index.html'
+    context_object_name = 'posts'
+    allow_empty = False
+
+    def get_queryset(self):
+        return Rocket.objects.filter(type__slug=self.kwargs['type_slug'], is_published=True).select_related('type')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c = Type.objects.get(slug=self.kwargs['type_slug'])
+        c_def = self.get_user_context(title='Types of rockets - ' + str(c.name),
+                                      type_selected=c.pk)
+        return dict(list(context.items()) + list(c_def.items()))
+
+
+# def show_type(request, type_slug):
+#     type = Type.objects.filter(slug=type_slug)
+#     posts = Rocket.objects.filter(type_id=type[0].id)
+#
+#     if len(posts) == 0:
+#         raise Http404()
+#
+#     context = {
+#         'posts': posts,
+#         'title': 'Showing by types',
+#         'type_selected': type[0].id,
+#     }
+#     return render(request, 'schedule/index.html', context=context)
+#
+#
 def pageNotFound(request, exception):
     return HttpResponseNotFound('<h1> Page not found :( </h1>')
