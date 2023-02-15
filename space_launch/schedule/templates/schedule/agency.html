@@ -2,15 +2,24 @@
 
 {% block content %}
 
-<h1>{{agency.name}}</h1>
-<h1>TEST 2 more text</h1>
-<h2>moreeeeeeeee text 2</h2>
-<h2>moreeeeeeeee text 3</h2>
-<ul class="list-articles">
-    <li>
+<h2>View the launch schedule for all of {{agency.name}} </h2>
 
-        {{agency.name|linebreaks}}
+ {% for p in agency.rocket_set.all %}
+    <li>
+        <div class="article-panel">
+            <p class="first">Launch Date: {{p.time_launch|date:"d-m-Y H:i:s"}}</p>
+            <p class="last">Type of rocket: {{p.type}}</p>
+        </div>
+        {% if p.photo %}
+        <p><img class="img-article-left thumb" src="{{ p.photo.url}}"></p>
+        {% endif %}
+        <h2>{{p.title}}</h2>
+        {% autoescape on %}
+        {{p.content|linebreaks|truncatewords:40}}
+        {% endautoescape %}
+        <div class="clear"></div>
+        <p class="link-read-post"><a href="{{ p.get_absolute_url }}">More about this launch</a></p>
     </li>
-</ul>
+{% endfor %}
 
 {% endblock %}

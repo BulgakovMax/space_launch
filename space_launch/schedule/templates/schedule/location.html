@@ -2,9 +2,24 @@
 
 {% block content %}
 
-<h1>{{location.name}}</h1>
-
 <h2>View the launch schedule for all of {{location.name}} </h2>
 
+ {% for p in location.rocket_set.all %}
+    <li>
+        <div class="article-panel">
+            <p class="first">Launch Date: {{p.time_launch|date:"d-m-Y H:i:s"}}</p>
+            <p class="last">Type of rocket: {{p.type}}</p>
+        </div>
+        {% if p.photo %}
+        <p><img class="img-article-left thumb" src="{{ p.photo.url}}"></p>
+        {% endif %}
+        <h2>{{p.title}}</h2>
+        {% autoescape on %}
+        {{p.content|linebreaks|truncatewords:40}}
+        {% endautoescape %}
+        <div class="clear"></div>
+        <p class="link-read-post"><a href="{{ p.get_absolute_url }}">More about this launch</a></p>
+    </li>
+{% endfor %}
 
 {% endblock %}

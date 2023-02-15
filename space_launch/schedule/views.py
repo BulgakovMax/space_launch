@@ -114,8 +114,10 @@ def show_post(request, post_slug):
 def show_location(request, slug):
     from schedule.models import Location
     location = get_object_or_404(Location, slug=slug)
+    l_rockets = Rocket.objects.select_related('location')
 
     context = {
+        'l_rockets': l_rockets,
         'location': location,
         'title': location.name,
     }
@@ -133,23 +135,6 @@ def show_agency(request, slug):
     }
 
     return render(request, 'schedule/agency.html', context=context)
-
-
-# class ShowLocation(DataMixin, ListView):
-#     model = Location
-#     template_name = 'schedule/location.html'
-#     context_object_name = 'location'
-#     # allow_empty = False
-#
-#     def get_queryset(self):
-#         return Location.objects.filter(name=self.kwargs['location_slug']).select_related('name')
-#
-#     def get_context_data(self, *, object_list=None, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         c = Location.objects.get(slug=self.kwargs['location_slug'])
-#         c_def = self.get_user_context(title='Location' + str(c.name),
-#                                       type_selected=c.pk)
-#         return dict(list(context.items()) + list(c_def.items()))
 
 
 class RocketType(DataMixin, ListView):
