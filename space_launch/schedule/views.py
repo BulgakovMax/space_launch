@@ -7,10 +7,13 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
+import requests
+from django.http import JsonResponse
 
 from .forms import *
 from .models import *
 from .utils import *
+
 
 
 class ScheduleHome(DataMixin, ListView):
@@ -27,30 +30,21 @@ class ScheduleHome(DataMixin, ListView):
         return Rocket.objects.filter(is_published=True).select_related('type')
 
 
-def about(request):
-    return render(request, 'schedule/about.html', {'title': 'About'})
+class RocketType(DataMixin, ListView):
+    model = Rocket
+    template_name = 'schedule/index.html'
+    context_object_name = 'posts'
+    allow_empty = False
 
+    def get_queryset(self):
+        return Rocket.objects.filter(type__slug=self.kwargs['type_slug'], is_published=True).select_related('type')
 
-def rockets(request):
-    return render(request, 'schedule/rockets.html', {'title': 'rockets'})
-
-
-def locations(request):
-    from schedule.models import Location
-    locations = Location.objects.order_by('name').values()
-
-    return render(request, 'schedule/locations.html', {'title': 'Locations', 'locations': locations})
-
-
-def agencies(request):
-    from schedule.models import Agency
-    agencies = Agency.objects.order_by('name').values()
-
-    return render(request, 'schedule/agencies.html', {'title': 'Agencies', 'agencies': agencies})
-
-
-def contacts(request):
-    return render(request, 'schedule/contacts.html', {'title': 'Contacts'})
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c = Type.objects.get(slug=self.kwargs['type_slug'])
+        c_def = self.get_user_context(title='Types of rockets - ' + str(c.name),
+                                      type_selected=c.pk)
+        return dict(list(context.items()) + list(c_def.items()))
 
 
 class RegisterUser(DataMixin, CreateView):
@@ -85,6 +79,32 @@ class LoginUser(DataMixin, LoginView):
 def logout_user(request):
     logout(request)
     return redirect('login')
+
+
+def about(request):
+    return render(request, 'schedule/about.html', {'title': 'About'})
+
+
+def rockets(request):
+    return render(request, 'schedule/rockets.html', {'title': 'rockets'})
+
+
+def locations(request):
+    from schedule.models import Location
+    locations = Location.objects.order_by('name').values()
+
+    return render(request, 'schedule/locations.html', {'title': 'Locations', 'locations': locations})
+
+
+def agencies(request):
+    from schedule.models import Agency
+    agencies = Agency.objects.order_by('name').values()
+
+    return render(request, 'schedule/agencies.html', {'title': 'Agencies', 'agencies': agencies})
+
+
+def contacts(request):
+    return render(request, 'schedule/contacts.html', {'title': 'Contacts'})
 
 
 def addpage(request):
@@ -137,37 +157,18 @@ def show_agency(request, slug):
     return render(request, 'schedule/agency.html', context=context)
 
 
-class RocketType(DataMixin, ListView):
-    model = Rocket
-    template_name = 'schedule/index.html'
-    context_object_name = 'posts'
-    allow_empty = False
-
-    def get_queryset(self):
-        return Rocket.objects.filter(type__slug=self.kwargs['type_slug'], is_published=True).select_related('type')
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        c = Type.objects.get(slug=self.kwargs['type_slug'])
-        c_def = self.get_user_context(title='Types of rockets - ' + str(c.name),
-                                      type_selected=c.pk)
-        return dict(list(context.items()) + list(c_def.items()))
-
-
-# def show_type(request, type_slug):
-#     type = Type.objects.filter(slug=type_slug)
-#     posts = Rocket.objects.filter(type_id=type[0].id)
-#
-#     if len(posts) == 0:
-#         raise Http404()
-#
-#     context = {
-#         'posts': posts,
-#         'title': 'Showing by types',
-#         'type_selected': type[0].id,
-#     }
-#     return render(request, 'schedule/index.html', context=context)
-#
-#
 def pageNotFound(request, exception):
     return HttpResponseNotFound('<h1> Page not found :( </h1>')
+
+
+def next_launch(request):
+    url = 'https://ll.thespacedevs.com/2.2.0/launch/upcoming/'
+    params = {'mode': 'detailed', 'limit': 10, 'offset': 0}
+
+    response = requests.get(url, params=params)
+    launches = response.json()['results']
+
+    context = {
+        'launches': launches,
+    }
+    return render(request, 'schedule/next_launch.html', context)

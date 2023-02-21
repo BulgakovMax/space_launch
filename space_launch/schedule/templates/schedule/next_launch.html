@@ -1,0 +1,31 @@
+{% extends 'schedule/base.html' %}
+
+{% block content %}
+<ul class="list-articles">
+    {% for p in launches %}
+    <li>
+        <p><img class="img-article-left thumb" src="{{ p.image}}"></p>
+        <div class="article-panel">
+            <p class="first">Time: {{p.net}}, </p>
+            <p class="last">Status: {{p.status.name}}</p>
+        </div>
+        <div class="article-panel">
+            <p class="first">Agency: {{p.launch_service_provider.name}}</p>
+            <p class="last">Type: {{p.launch_service_provider.type}}</p>
+        </div>
+        <div class="article-panel">
+            <p class="first">Location: {{p.pad.location.name}}</p>
+        </div>
+        <h2>Rocket | mission: {{p.name}}</h2>
+        <div>
+            {{p.launch_service_provider.description|linebreaks}}
+        </div>
+        <br>
+        <hr>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}
+
+
+

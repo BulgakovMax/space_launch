@@ -8,6 +8,7 @@ menu = [{'title': "About", 'url_name': 'about'},
         {'title': "Agencies", 'url_name': 'agencies'},
         {'title': "Locations", 'url_name': 'locations'},
         {'title': "Rockets", 'url_name': 'home'},
+        {'title': "Next launch API", 'url_name': 'next_launch'},
         {'title': "Contacts", 'url_name': 'contacts'},
         {'title': "Log in", 'url_name': 'login'}
         ]
@@ -33,4 +34,10 @@ def show_types(sort=None, type_selected=0):
 
 @register.inclusion_tag('schedule/main_menu.html')
 def show_menu():
+    # user_menu = menu.copy()
+    # if not self.request.user.is_authenticated:
+    #     user_menu.pop(1)
+    #
+    # return {'menu': user_menu}
     return {'menu': menu}
+
