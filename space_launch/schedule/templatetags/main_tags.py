@@ -32,12 +32,13 @@ def show_types(sort=None, type_selected=0):
     return {'type': type, 'type_selected': type_selected}
 
 
-@register.inclusion_tag('schedule/main_menu.html')
-def show_menu():
-    # user_menu = menu.copy()
-    # if not self.request.user.is_authenticated:
-    #     user_menu.pop(1)
-    #
-    # return {'menu': user_menu}
-    return {'menu': menu}
+@register.inclusion_tag('schedule/main_menu.html', takes_context=True)
+def show_menu(context):
+    request = context['request']
+    user_menu = menu.copy()
+    if not request.user.is_authenticated:
+        user_menu.pop(1)
+        return {'menu': user_menu}
+    else:
+        return {'menu': menu}
 
