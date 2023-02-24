@@ -4,24 +4,37 @@ from django.http import HttpResponseNotFound
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView
+from django.shortcuts import render
 import requests
-
+import time
+from datetime import datetime, timezone
 
 from .forms import *
 from .utils import *
 
 
-
 class ScheduleHome(DataMixin, ListView):
+    # Define the Rocket model as the data source for the view
     model = Rocket
+
+    # Set the name of the template to be used to render the view
     template_name = 'schedule/index.html'
+
+    # Set the name of the context variable that will contain the list of rockets
     context_object_name = 'posts'
 
+    # Override the get_context_data method to add additional context variables
     def get_context_data(self, *, object_list=None, **kwargs):
+        # Call the parent class's get_context_data method to get the default context data
         context = super().get_context_data(**kwargs)
+
+        # Call the DataMixin class's get_user_context method to get user-specific context data
         c_def = self.get_user_context(title="Main page")
+
+        # Merge the default and user-specific context data into a single dictionary
         return dict(list(context.items()) + list(c_def.items()))
 
+    # Override the get_queryset method to filter the list of rockets by is_published status
     def get_queryset(self):
         return Rocket.objects.filter(is_published=True).select_related('type')
 
@@ -142,14 +155,20 @@ def show_location(request, slug):
 
 
 def show_agency(request, slug):
+    # Import the Agency model and get_object_or_404 function
     from schedule.models import Agency
+    from django.shortcuts import get_object_or_404
+
+    # Use get_object_or_404 to retrieve an Agency instance based on the slug
     agency = get_object_or_404(Agency, slug=slug)
 
+    # Define a context dictionary with data to be passed to the template
     context = {
         'agency': agency,
         'title': agency.name,
     }
 
+    # Render the agency.html template with the context data
     return render(request, 'schedule/agency.html', context=context)
 
 
@@ -162,9 +181,37 @@ def next_launch(request):
     params = {'mode': 'detailed', 'limit': 10, 'offset': 0}
 
     response = requests.get(url, params=params)
-    launches = response.json()['results']
 
-    context = {
-        'launches': launches,
-    }
-    return render(request, 'schedule/next_launch.html', context)
+    if response.status_code == 200:
+        # Parse the JSON data from the response
+        launches = response.json()['results']
+
+        # Add a delay between requests to avoid hitting the rate limit
+        time.sleep(1)
+        if len(launches) > 0:
+            # Parse launch time
+            launch_time_str = launches[0]['net']
+            if '.' in launch_time_str:
+                # Milliseconds are included
+                launch_time = datetime.strptime(launch_time_str, '%Y-%m-%dT%H:%M:%S.%fZ')
+            else:
+                launch_time = datetime.strptime(launch_time_str, '%Y-%m-%dT%H:%M:%SZ')
+
+            # Convert launch time to local timezone
+            launch_time_local = launch_time.replace(tzinfo=timezone.utc).astimezone(tz=None)
+            launch_time_iso = launch_time_local.isoformat()
+
+            context = {
+                'launches': launches,
+                'launch_time': launch_time_iso,
+            }
+        else:
+            context = {
+                'launches': launches,
+            }
+        return render(request, 'schedule/next_launch.html', context)
+
+    else:
+        # Handle the error case
+        error_message = f"Error: {response.status_code} - {response.reason}"
+        return render(request, 'schedule/error.html', {'error_message': error_message})
