@@ -2,9 +2,9 @@
 
 {% block content %}
 
-<h2>View the launch schedule for all of {{location.name}} </h2>
+<h2>View the launch schedule for all of {{agency.name}} </h2>
 
- {% for p in location.rocket_set.all %}
+ {% for p in agency.rocket_set.all %}
     <li>
         <div class="article-panel">
             <p class="first">Launch Date: {{p.time_launch|date:"d-m-Y H:i:s"}}</p>

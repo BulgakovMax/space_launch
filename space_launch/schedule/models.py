@@ -24,7 +24,7 @@ class Rocket(models.Model):
     class Meta:
         verbose_name = "Rocket"
         verbose_name_plural = "Rocket"
-        ordering = ['time_create', 'title']
+        ordering = ['time_launch']
 
 
 class Type(models.Model):
@@ -46,7 +46,7 @@ class Location(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('location', kwargs={'location_slug': self.slug})
+        return reverse('location', kwargs={'slug': self.slug})
 
 
 class Agency(models.Model):

@@ -3,13 +3,16 @@ from django.db.models import Count
 from .models import *
 
 menu = [{'title': "About", 'url_name': 'about'},
-        {'title': "Add article", 'url_name': 'add_page'},
+        {'title': "Add rocket", 'url_name': 'add_page'},
+        {'title': "Rockets", 'url_name': 'home'},
+        {'title': "Locations", 'url_name': 'locations'},
+        {'title': "Agencies", 'url_name': 'agencies'},
         {'title': "Contacts", 'url_name': 'contact'},
-        {'title': "Log in", 'url_name': 'login'}
         ]
 
+
 class DataMixin:
-    paginate_by = 20
+    paginate_by = 5
 
     def get_user_context(self, **kwargs):
         context = kwargs
@@ -21,7 +24,7 @@ class DataMixin:
 
         context['menu'] = user_menu
 
-        context['type'] = types
+        context['types'] = types
         if 'type_selected' not in context:
             context['type_selected'] = 0
         return context

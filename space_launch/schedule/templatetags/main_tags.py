@@ -5,10 +5,11 @@ register = template.Library()
 
 menu = [{'title': "About", 'url_name': 'about'},
         {'title': "Add rocket", 'url_name': 'add_page'},
-        {'title': "Rockets", 'url_name': 'home'},
-        {'title': "Locations", 'url_name': 'locations'},
         {'title': "Agencies", 'url_name': 'agencies'},
-        {'title': "Contacts", 'url_name': 'contact'},
+        {'title': "Locations", 'url_name': 'locations'},
+        {'title': "Rockets", 'url_name': 'home'},
+        {'title': "Next launch API", 'url_name': 'next_launch'},
+        {'title': "Contacts", 'url_name': 'contacts'},
         {'title': "Log in", 'url_name': 'login'}
         ]
 
@@ -31,6 +32,13 @@ def show_types(sort=None, type_selected=0):
     return {'type': type, 'type_selected': type_selected}
 
 
-@register.inclusion_tag('schedule/main_menu.html')
-def show_menu():
-    return {'menu': menu}
+@register.inclusion_tag('schedule/main_menu.html', takes_context=True)
+def show_menu(context):
+    request = context['request']
+    user_menu = menu.copy()
+    if not request.user.is_authenticated:
+        user_menu.pop(1)
+        return {'menu': user_menu}
+    else:
+        return {'menu': menu}
+
