@@ -1,2 +1,17 @@
+# Django #
 *.log
+*.pot
+*.pyc
+__pycache__
+db.sqlite3
+media
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Backup files #
+*.bak
+
+#idea
 .idea

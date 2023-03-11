@@ -1,40 +1,13 @@
 {% extends 'schedule/base.html' %}
 
 {% block content %}
-  {% if launches %}
-    {% with launch_time=launches.0.net %}
-      {% for launch in launches %}
-        {% if launch.net == launch_time %}
-          <p id="countdown_{{ forloop.counter0 }}"></p>
-          <script>
-            // Set the launch time for the countdown timer
-            var launchTime = new Date("{{ launch.net }}");
 
-            // Update the countdown timer every second
-            var countdownElement = document.getElementById("countdown_{{ forloop.counter0 }}");
-            setInterval(function() {
-              var now = new Date();
-              var timeLeft = Math.max(0, launchTime - now);
-              var hoursLeft = Math.floor(timeLeft / (1000 * 60 * 60));
-              var minutesLeft = Math.floor((timeLeft / (1000 * 60)) % 60);
-              var secondsLeft = Math.floor((timeLeft / 1000) % 60);
-              var countdownString = hoursLeft + " hours, " + minutesLeft + " minutes, " + secondsLeft + " seconds";
-              countdownElement.innerHTML = countdownString;
-            }, 1000);
-          </script>
-        {% endif %}
-      {% endfor %}
-    {% endwith %}
-  {% else %}
-    <h1>No launches scheduled.</h1>
-  {% endif %}
-
+<h1 align="center">Time to the nearest launch: {{difference}}, </h1>
+<hr>
 
 <ul class="list-articles">
+
     {% for p in launches %}
-
-
-
     <li>
         <p><img class="img-article-left thumb" src="{{ p.image}}"></p>
         <div class="article-panel">
@@ -52,33 +25,7 @@
         <div>
             {{p.mission.description|linebreaks}}
         </div>
-        <br>
-         <div id="countdown-timer"></div>
 
-    <script>
-  var launchDate = new Date('{{ launch_time }}');
-
-  function updateCountdown() {
-    var now = new Date();
-    var timeRemaining = launchDate - now;
-
-    if (timeRemaining <= 0) {
-      document.getElementById('countdown-timer').innerHTML = "Launch has already happened!";
-    } else {
-      var days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
-      var hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      var minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-      var seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
-      document.getElementById('countdown-timer').innerHTML = "Launch in " + days + "d " + hours + "h " + minutes + "m " + seconds + "s";
-    }
-  }
-
-  setInterval(updateCountdown, 1000);
-
-    </script>
-
-
-        <hr>
     </li>
     {% endfor %}
 </ul>

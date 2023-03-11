@@ -1,13 +1,13 @@
 from django.contrib.auth import logout, login
 from django.contrib.auth.views import LoginView
 from django.http import HttpResponseNotFound
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView
-from django.shortcuts import render
+import datetime
 import requests
-import time
-from datetime import datetime, timezone
+from django.shortcuts import render
+
 
 from .forms import *
 from .utils import *
@@ -182,36 +182,17 @@ def next_launch(request):
 
     response = requests.get(url, params=params)
 
-    if response.status_code == 200:
-        # Parse the JSON data from the response
-        launches = response.json()['results']
+    launches = response.json()['results']
 
-        # Add a delay between requests to avoid hitting the rate limit
-        time.sleep(1)
-        if len(launches) > 0:
-            # Parse launch time
-            launch_time_str = launches[0]['net']
-            if '.' in launch_time_str:
-                # Milliseconds are included
-                launch_time = datetime.strptime(launch_time_str, '%Y-%m-%dT%H:%M:%S.%fZ')
-            else:
-                launch_time = datetime.strptime(launch_time_str, '%Y-%m-%dT%H:%M:%SZ')
+    # Calculate the difference between the current date and the next launch date
+    now = datetime.datetime.now(datetime.timezone.utc)
+    next_launch_date_str = launches[0]['net']
+    next_launch_date = datetime.datetime.fromisoformat(next_launch_date_str[:-1]).replace(tzinfo=datetime.timezone.utc)
+    difference = next_launch_date - now
+    difference_str = f"{difference.days} days, {difference.seconds // 3600} hours, {(difference.seconds // 60) % 60} minutes"
 
-            # Convert launch time to local timezone
-            launch_time_local = launch_time.replace(tzinfo=timezone.utc).astimezone(tz=None)
-            launch_time_iso = launch_time_local.isoformat()
-
-            context = {
-                'launches': launches,
-                'launch_time': launch_time_iso,
-            }
-        else:
-            context = {
-                'launches': launches,
-            }
-        return render(request, 'schedule/next_launch.html', context)
-
-    else:
-        # Handle the error case
-        error_message = f"Error: {response.status_code} - {response.reason}"
-        return render(request, 'schedule/error.html', {'error_message': error_message})
+    context = {
+        'launches': launches,
+        'difference': difference_str
+    }
+    return render(request, 'schedule/next_launch.html', context)
