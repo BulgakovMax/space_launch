@@ -1,27 +1,22 @@
-name: PythonAnywhere Deploy
-
+name: PythonAnywhere to PythonAnywhere
 on:
   push:
-    branches:
-      - master
-
+    branches: [ master ]
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-
-        uses: actions/checkout@v2
-
-      - name: Install dependencies
-        run: |
-          python -m venv env
-          source env/bin/activate
-          pip install -r requirements.txt
-
-      - name: Deploy to PythonAnywhere
-        uses: faustovaz/pythonanywhere-deploy-action@v1
-        with:
-          api_key: ${{ secrets.PA_API_TOKEN }}
-          username: MaxBulgakov
-          domain: https://maxbulgakov.pythonanywhere.com/
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Install dependencies
+      run: |
+        python3 -m venv env
+        source env/bin/activate
+        pip install -r requirements.txt
+    - name: Deploy to PythonAnywhere
+      env:
+        PA_TOKEN: ${{ secrets.PA_API_TOKEN }}
+      run: |
+        pa_login --token $PA_TOKEN
+        pa_upload . https://www.pythonanywhere.com/api/v0/user/MaxBulgakov/files/path/home/MaxBulgakov/space_launch
+        pa_web_app --domain maxbulgakov.pythonanywhere.com reload
