@@ -18,11 +18,14 @@ from django.contrib import admin
 from django.urls import path, include
 
 from schedule.views import *
+# from schedule.api.v1.views import *
 from space_launch import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('schedule.urls')),
+    # path('', include('schedule.api.v1.urls')),
+
 ]
 
 if settings.DEBUG:
