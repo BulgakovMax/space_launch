@@ -8,5 +8,5 @@ class RocketSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Rocket
-        fields = ('user', 'id', 'title', 'content', 'type', 'agency', 'location')
+        fields = ('user', 'id', 'title', 'content')
 
