@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from space_launch.schedule.models import Rocket
+from schedule.models import Rocket
 
 
 class RocketSerializer(serializers.ModelSerializer):

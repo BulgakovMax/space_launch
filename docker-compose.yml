@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:13-alpine
+    environment:
+      POSTGRES_DB: space_launch
+      POSTGRES_USER: max
+      POSTGRES_PASSWORD: 1234
+  web:
+    build: .
+    command: ./entrypoint.sh
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
