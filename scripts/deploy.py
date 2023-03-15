@@ -1,5 +1,6 @@
 import os
 import httpx
+import time
 
 
 def read_files(path):
@@ -15,12 +16,14 @@ def read_files(path):
             read_files(full_path)
         else:
             # If the entry is a file, read its contents and send it to the API
-            if "__pycache__" in full_path or ".git" in full_path or "scripts" in full_path:
+            if "__pycache__" in full_path or ".git" in full_path or "scripts" in full_path or "venv" in full_path:
                 continue
             with open(full_path, 'rb') as file:
                 # print(full_path[4:])
                 content = file.read()
                 send_to_api(full_path[4:], content)
+                time.sleep(2)
+
 
 
 def send_to_api(full_path, content):
