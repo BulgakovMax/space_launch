@@ -35,7 +35,7 @@ def send_to_api(full_path, content):
 
     with httpx.Client() as client:
         response = client.post(
-            f'https://{host}/api/v0/user/{username}/files/path/home/{username}/fast_api_poc/{full_path}',
+            f'https://{host}/api/v0/user/{username}/files/path/home/{username}/space_launch/{full_path}',
             files=files,
             headers={'Authorization': f'Token {token}'}
         )
