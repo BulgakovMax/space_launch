@@ -24,8 +24,7 @@ from space_launch import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('schedule.urls')),
-    # path('', include('schedule.api.v1.urls')),
-
+    path('', include('schedule.api.v1.urls')),
 ]
 
 if settings.DEBUG:

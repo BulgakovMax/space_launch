@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from space_launch.schedule.models import Rocket
+from schedule.models import Rocket
 
 
 class RocketSerializer(serializers.ModelSerializer):
@@ -8,5 +8,5 @@ class RocketSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Rocket
-        fields = ('user', 'id', 'title', 'content', 'type', 'agency', 'location')
+        fields = ('user', 'id', 'title', 'content')
 

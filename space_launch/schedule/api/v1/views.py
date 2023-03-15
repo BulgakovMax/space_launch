@@ -1,9 +1,10 @@
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
-from space_launch.schedule.models import Rocket
-from .permissions import IsOwnerOrReadOnly, IsAdminOrReadOnly
-from .serializers import RocketSerializer
+from schedule.models  import Rocket
+from schedule.api.v1.permissions import IsOwnerOrReadOnly, IsAdminOrReadOnly
+from schedule.api.v1.serializers import RocketSerializer
+
 
 class RocketAPIList(generics.ListCreateAPIView):
     queryset = Rocket.objects.all()

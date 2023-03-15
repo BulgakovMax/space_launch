@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-uao)6xdie84k%7a9*1n%6d$yc(8*@%6y6ll-tycc2-5@63@fsl
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1', 'maxbulgakov.pythonanywhere.com']
 
 
 # Application definition
@@ -142,3 +142,5 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ],
 }
+
+ANONYMOUS_USER_ID = -1
