@@ -4,11 +4,11 @@ from .models import *
 
 
 class RocketAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'type', 'location', 'agency', 'time_launch', 'is_published')
+    list_display = ('id', 'title', 'type', 'location', 'agency', 'time_launch', 'is_published', 'user')
     list_display_links = ('id', 'title')
     search_fields = ('id', 'content', 'time_launch')
     list_editable = ('is_published',)
-    list_filter = ('is_published', 'time_create')
+    list_filter = ('is_published', 'time_create', 'user')
     prepopulated_fields = {"slug": ("title",)}
 
 

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from schedule.models import Rocket
+from schedule.models import Rocket, Location, Agency
 
 
 class RocketSerializer(serializers.ModelSerializer):
@@ -8,5 +8,18 @@ class RocketSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Rocket
-        fields = ('user', 'id', 'title', 'content')
+        fields = ('id', 'title', 'content', 'type', 'location', 'agency', 'user')
+
+
+class LocationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Location
+        fields = ('id', 'name')
+
+
+class AgencySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Agency
+        fields = ('id', 'name')
+
 

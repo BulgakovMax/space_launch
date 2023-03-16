@@ -1,6 +1,8 @@
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
+
 
 USER = get_user_model()
 
@@ -17,7 +19,7 @@ class Rocket(models.Model):
     type = models.ForeignKey('Type', on_delete=models.PROTECT, verbose_name='Type')
     location = models.ForeignKey('Location', null=True, on_delete=models.PROTECT, verbose_name='Location')
     agency = models.ForeignKey('Agency', null=True, on_delete=models.PROTECT, verbose_name='Agency')
-    user = models.ForeignKey(USER, on_delete=models.CASCADE, default=1)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
 
     def __str__(self):
         return self.title
