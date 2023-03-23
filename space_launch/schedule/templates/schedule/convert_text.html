@@ -1,0 +1,15 @@
+{% extends 'schedule/base.html' %}
+
+{% block content %}
+<h1>Latin to Cyrillic Converter</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Translate</button>
+</form>
+{% if translated_text %}
+<hr>
+<h3>Converted Text:</h3>
+<p>{{ translated_text }}</p>
+{% endif %}
+{% endblock %}

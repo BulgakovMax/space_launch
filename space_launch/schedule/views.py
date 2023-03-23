@@ -9,8 +9,9 @@ import requests
 from django.shortcuts import render
 
 
-from .forms import *
-from .utils import *
+from .forms import AddPostForm, RegisterUserForm, LoginUserForm, LatinToCyrillicForm
+from .utils import DataMixin, latin_to_cyrillic
+from .models import Launcher, Rocket
 
 
 class ScheduleHome(DataMixin, ListView):
@@ -196,3 +197,57 @@ def next_launch(request):
         'difference': difference_str
     }
     return render(request, 'schedule/next_launch.html', context)
+
+
+def update_database():
+    url = 'https://ll.thespacedevs.com/2.2.0/config/launcher/'
+    response = requests.get(url)
+    data = response.json()
+    
+    for item in data['results']:
+        launcher, created = Launcher.objects.get_or_create(
+            id=item['id'],
+            defaults={
+                'title': item['name'], 
+                # 'description': item['manufacturer'], 
+                'family': item['family'],
+                'full_name': item['full_name']
+            }
+        )
+        
+        # update the launcher's fields
+        launcher.title = item['name']
+        # launcher.title = item['description']
+        launcher.family = item['family']
+        launcher.full_name = item['variant']
+        
+        # save the changes to the database
+        launcher.save()
+
+
+def launcher_list(request):
+    # update the database with the latest information
+    update_database()
+
+    # retrieve a list of all launchers from the database
+    launchers = Launcher.objects.all()
+
+    # render the list of launchers in an HTML template
+    context = {'launchers': launchers}
+    return render(request, 'schedule/launcher.html', context)
+
+
+def convertor(request):
+    form = LatinToCyrillicForm()
+    translated_text = ''
+    if request.method == 'POST':
+        form = LatinToCyrillicForm(request.POST)
+        if form.is_valid():
+            text = form.cleaned_data.get('my_text_input')
+            language = form.cleaned_data.get('my_language_choice')
+            if language == 'ua':
+                translated_text = latin_to_cyrillic(text, language='ua')
+            else:
+                translated_text = latin_to_cyrillic(text)
+    context = {'form': form, 'translated_text': translated_text}
+    return render(request, 'schedule/convert_text.html', context)

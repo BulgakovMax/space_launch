@@ -1,0 +1,11 @@
+{% extends 'schedule/base.html' %}
+
+{% block content %}
+<h1>Launcher List</h1>
+<ul>
+    {% for launcher in launchers %}
+        <li>{{ launcher.title }} - {{ launcher.family }} - {{ launcher.full_name  }}</li>
+        <hr>
+    {% endfor %}
+</ul>
+{% endblock %}

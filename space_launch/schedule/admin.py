@@ -33,8 +33,17 @@ class AgencyAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
 
 
+class LauncherAdmin(admin.ModelAdmin):
+    list_display = ('id', 'title', 'family', 'full_name')
+    list_display_links = ('id', 'title')
+    search_fields = ('title',)
+
+
+
 admin.site.register(Rocket, RocketAdmin)
 admin.site.register(Type, TypeAdmin)
 admin.site.register(Location, LocationAdmin)
 admin.site.register(Agency, AgencyAdmin)
+admin.site.register(Launcher, LauncherAdmin)
+
 

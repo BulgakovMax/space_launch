@@ -9,6 +9,7 @@ menu = [{'title': "About", 'url_name': 'about'},
         {'title': "Locations", 'url_name': 'locations'},
         {'title': "Rockets", 'url_name': 'home'},
         {'title': "Next launch API", 'url_name': 'next_launch'},
+        {'title': "Converter", 'url_name': 'convertor'},
         {'title': "Contacts", 'url_name': 'contacts'},
         {'title': "Log in", 'url_name': 'login'}
         ]

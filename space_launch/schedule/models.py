@@ -65,3 +65,25 @@ class Agency(models.Model):
     def get_absolute_url(self):
         return reverse('agency', kwargs={'agency_slug': self.slug})
 
+
+class Launcher(models.Model):
+    title = models.CharField(max_length=255)
+    # description = models.TextField(blank=True)
+    time_create = models.DateTimeField(auto_now_add=True)
+    time_update = models.DateTimeField(auto_now=True)
+    is_published = models.BooleanField(default=True)
+    family = models.CharField(max_length=255)
+    full_name = models.CharField(max_length=1255)
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse('post', kwargs={'post_title': self.title})
+
+    class Meta:
+        verbose_name = "Launcher"
+        verbose_name_plural = "Launcher"
+        ordering = ['title']   
+    
+

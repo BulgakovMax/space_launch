@@ -2,7 +2,12 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from .models import *
+from django.utils.translation import gettext_lazy as _
 
+LANGUAGE_CHOICES = (
+    ('ru', _('Russian')),
+    ('uk', _('Ukrainian')),
+)
 
 class AddPostForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -35,3 +40,19 @@ class RegisterUserForm(UserCreationForm):
 class LoginUserForm(AuthenticationForm):
     username = forms.CharField(label='Log in', widget=forms.TextInput(attrs={'class': 'form-input'}))
     password = forms.CharField(label='Password', widget=forms.PasswordInput(attrs={'class': 'form-input'}))
+
+
+class LatinToCyrillicForm(forms.Form):
+    LANGUAGE_CHOICES = [
+    ('ru', 'Russian'),
+    ('ua', 'Ukrainian'),
+]
+    my_text_input = forms.CharField(
+        label=_('Text Input'),
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 5})
+    )
+    my_language_choice = forms.ChoiceField(
+        label=_('Language'),
+        choices=LANGUAGE_CHOICES,
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
