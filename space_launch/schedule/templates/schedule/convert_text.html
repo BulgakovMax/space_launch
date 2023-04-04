@@ -5,11 +5,11 @@
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Translate</button>
+    <button type="submit">Convert</button>
 </form>
 {% if translated_text %}
 <hr>
 <h3>Converted Text:</h3>
-<p>{{ translated_text }}</p>
+<textarea rows="10" cols="50">{{ translated_text }}</textarea>
 {% endif %}
 {% endblock %}

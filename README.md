@@ -1,17 +1,34 @@
 Django Project Template with API REST Framework, HTML, Jinja, CSS, and Auto-Upload
-This is a template for a Django project with a REST API built using Django REST Framework, HTML templates with Jinja templating engine, CSS for styling, and auto-upload feature for static files.
+This is a template for a Django project with a REST API built using Django REST Framework, HTML templates with Jinja templating engine, CSS for styling, and auto-upload feature
 
 Requirements
 Python 3.6 or higher
 Django 3.0 or higher
 Django REST Framework 3.0 or higher
 
-Installation
-Clone the repository: git clone https://github.com/your-username/your-project.git
-Create a virtual environment: python3 -m venv env
-Activate the virtual environment: source env/bin/activate
-Install the requirements: pip install -r requirements.txt
-Run the migrations: python manage.py migrate
+Installing Space Launch
+# Clone this repo and create virtual environment
+git clone https://github.com/BulgakovMax/space_launch.git
+cd Space_launch
+
+# For Linux/Ubuntu
+python3 -m venv venv
+source venv\bin\activate
+pip install -r requirements.txt
+
+# For Windows
+python -m venv venv
+venv\Scripts\activate
+pip install -r requirements.txt
+Installing with Docker Compose
+# Clone this repo and and build docker containers
+git clone https://github.com/BulgakovMax/space_launch.git
+cd Space_launch
+
+docker compose up --build
+Run Space Launch
+python manage.py runserver
+After starting, you can go to http://127.0.0.1:8000/ and use Space Launch app
 
 Usage
 Start the server: python manage.py runserver
@@ -22,7 +39,7 @@ Features
 Django REST Framework for building RESTful APIs.
 HTML templates with Jinja templating engine for dynamic content rendering.
 CSS for styling the website.
-Auto-upload feature for static files using django-storages and boto3.
+Auto-upload feature by scripts
 
 Configuration
 Django
@@ -43,8 +60,7 @@ Use Jinja templating syntax to render dynamic content.
 CSS
 Define your CSS styles in static/css/.
 
-Auto-Upload
-Create an AWS S3 bucket and obtain your access keys.
-Define your AWS S3 access keys in environment variables or in .env file.
-Configure settings.py to use django-storages and boto3.
-Run python manage.py collectstatic to upload static files to S3 bucket.
+
+Author
+Developed and maintained by Max Bulgakov.
+

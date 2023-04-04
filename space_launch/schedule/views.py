@@ -245,9 +245,14 @@ def convertor(request):
         if form.is_valid():
             text = form.cleaned_data.get('my_text_input')
             language = form.cleaned_data.get('my_language_choice')
-            if language == 'ua':
-                translated_text = latin_to_cyrillic(text, language='ua')
-            else:
-                translated_text = latin_to_cyrillic(text)
+            # Split text into lines and translate each line separately
+            translated_lines = []
+            for line in text.split('\n'):
+                translated_lines.append(latin_to_cyrillic(line.strip(), language))
+            # Join translated lines back into a single string with line breaks
+            translated_text = '\n'.join(translated_lines)
     context = {'form': form, 'translated_text': translated_text}
     return render(request, 'schedule/convert_text.html', context)
+
+
+
