@@ -19,6 +19,4 @@ urlpatterns = [
     path('post/<slug:post_slug>/', show_post, name='post'),
     path('type/<slug:type_slug>', RocketType.as_view(), name='type'),
     path('next_launch/', next_launch, name='next_launch'),
-    path('convert_text/', convertor, name='convertor'),
-
 ]

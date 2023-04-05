@@ -1,0 +1,113 @@
+{% load static %}
+{% load main_tags %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{title}}</title>
+    <link type="text/css" href="{% static 'schedule/css/styles.css' %}" rel="stylesheet"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="shortcut icon" href="{% static 'schedule/images/main.ico' %}" type="image/x-icon"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<table class="table-page" border=0 cellpadding="0" cellspacing="0">
+    <tr>
+        <td valign=top>
+{% block mainmenu %}
+		<div class="header">
+			<ul id="mainmenu" class="mainmenu">
+			<li class="logo"><a href="{% url 'home' %}"><div class="logo"></div></a></li>
+                    {% show_menu %}
+				{% if request.user.is_authenticated %}
+				<li class="last"> {{user.username}} | <a href="{% url 'logout' %}">Log out</a></li>
+				{% else %}
+				<li class="last"><a href="{% url 'register' %}">Register</a> | <a href="{% url 'login' %}">Log in</a></li>
+				{% endif %}
+			</ul>
+			<div class="clear"></div>
+		</div>
+{% endblock mainmenu %}
+            <table class="table-content" border=0 cellpadding="0" cellspacing="0">
+                <tr>
+                    <!-- Sidebar left -->
+                    <td valign="top" class="left-chapters">
+                        <ul id="leftchapters">
+                            {% if type_selected == 0 %}
+                            <li class="selected">All categories</li>
+                            {% else %}
+                            <li><a href="{% url 'home' %}">All categories</a></li>
+                            {% endif %}
+
+                            {% show_types type_selected=type_selected %}
+                            <br>
+                            <hr>
+                            <p></p>
+                            <li>
+                                <a href="https://www.linkedin.com/in/maksym-bulgakov-b53b0a1a2/"
+                                   target="_blank" rel="nofollow"><p>My Linkedin </p></a>
+                            </li>
+                            <li>
+                                <a href="https://github.com/BulgakovMax?tab=repositories"
+                                   target="_blank" rel="nofollow"><p>My Github </p></a>
+                            </li>
+                        </ul>
+                    </td>
+                    <!-- End Sidebar -->
+                    <td valign="top" class="content">
+                        <!-- Breadcrumbs -->
+                        {% block breadcrumbs %}
+                        {% endblock %}
+
+                        <!-- Content block -->
+                        <div class="content-text">
+                            {% block content %}
+                            {% endblock %}
+                            {% if page_obj.has_other_pages %}
+                            <nav class="list-pages">
+                                <ul>
+                                    {% if page_obj.has_previous %}
+                                    <li class="page-num">
+                                        <a href="?page={{ page_obj.previous_page_number }}">&lt;</a>
+                                    </li>
+                                    {% endif %}
+
+                                    {% for p in paginator.page_range %}
+                                    {% if page_obj.number == p %}
+                                    <li class="page-num page-num-selected">{{ p }}</li>
+                                    {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
+                                    <li class="page-num">
+                                        <a href="?page={{ p }}">{{ p }}</a>
+                                    </li>
+                                    {% endif %}
+                                    {% endfor %}
+
+                                    {% if page_obj.has_next %}
+                                    <li class="page-num">
+                                        <a href="?page={{ page_obj.next_page_number }}">&gt;</a>
+                                    </li>
+                                    {% endif %}
+
+                                </ul>
+                            </nav>
+                            {% endif %}
+                        </div>
+                        <!-- End content block-->
+
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <!-- Footer -->
+    <tr>
+        <td valign=top>
+            <div id="footer">
+                <p>&copy; 2023 All rights reserved</p>
+            </div>
+        </td>
+    </tr>
+</table>
+<!-- End footer and page -->
+</body>
+</html>

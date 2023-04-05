@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 from schedule.views import *
+from text_converter.views import *
 # from schedule.api.v1.views import *
 from space_launch import settings
 
@@ -25,6 +26,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('schedule.urls')),
     path('', include('schedule.api.v1.urls')),
+    path('', include('text_converter.urls')),
 ]
 
 if settings.DEBUG:

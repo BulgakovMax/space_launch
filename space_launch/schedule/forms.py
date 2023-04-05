@@ -42,17 +42,4 @@ class LoginUserForm(AuthenticationForm):
     password = forms.CharField(label='Password', widget=forms.PasswordInput(attrs={'class': 'form-input'}))
 
 
-class LatinToCyrillicForm(forms.Form):
-    LANGUAGE_CHOICES = [
-    ('ru', 'Russian'),
-    ('ua', 'Ukrainian'),
-]
-    my_text_input = forms.CharField(
-        label=_('Input your text'),
-        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 10})
-    )
-    my_language_choice = forms.ChoiceField(
-        label=_('Choose a language'),
-        choices=LANGUAGE_CHOICES,
-        widget=forms.Select(attrs={'class': 'form-control'})
-    )
+
