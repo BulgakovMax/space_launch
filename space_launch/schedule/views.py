@@ -11,7 +11,7 @@ from django.shortcuts import render
 
 from .forms import AddPostForm, RegisterUserForm, LoginUserForm
 from .utils import DataMixin
-from .models import Launcher, Rocket
+from .models import Launcher, Rocket, Type
 
 
 class ScheduleHome(DataMixin, ListView):
