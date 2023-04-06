@@ -235,9 +235,3 @@ def launcher_list(request):
     # render the list of launchers in an HTML template
     context = {'launchers': launchers}
     return render(request, 'schedule/launcher.html', context)
-
-
-
-
-
-

@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'schedule.apps.ScheduleConfig',
-    'text_converter',
+    'text_converter.apps.TextConverterConfig',
     'rest_framework',
 ]
 

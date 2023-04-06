@@ -4,10 +4,6 @@ from django.contrib.auth.models import User
 from .models import *
 from django.utils.translation import gettext_lazy as _
 
-LANGUAGE_CHOICES = (
-    ('ru', _('Russian')),
-    ('uk', _('Ukrainian')),
-)
 
 class AddPostForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
