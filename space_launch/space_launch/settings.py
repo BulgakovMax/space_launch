@@ -57,7 +57,7 @@ ROOT_URLCONF = 'space_launch.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR,'templates'), 'space_launch/'],
+        'DIRS': ['space_launch/'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
