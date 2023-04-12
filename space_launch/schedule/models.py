@@ -47,6 +47,8 @@ class Type(models.Model):
 class Location(models.Model):
     name = models.CharField(max_length=100, db_index=True)
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL")
+    content = models.TextField(blank=True)
+    country_code = models.CharField(max_length=5)
 
     def __str__(self):
         return self.name
@@ -56,14 +58,28 @@ class Location(models.Model):
 
 
 class Agency(models.Model):
-    name = models.CharField(max_length=100, db_index=True)
+    OPTIONS = (
+        ('commercial', 'Commercial'),
+        ('government', 'Government'),
+    )
+    name = models.CharField(max_length=99, db_index=True)
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL")
+    photo = models.ImageField(upload_to="photos/%Y/%m/%d/")
+    content = models.TextField(blank=True)
+    type = models.CharField(max_length=12, choices=OPTIONS)
+
+
 
     def __str__(self):
         return self.name
 
     def get_absolute_url(self):
         return reverse('agency', kwargs={'agency_slug': self.slug})
+    
+    class Meta:
+        verbose_name = "Agency"
+        verbose_name_plural = "Agency"
+        ordering = ['name']   
 
 
 class Launcher(models.Model):

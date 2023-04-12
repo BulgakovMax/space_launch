@@ -2,7 +2,17 @@
 
 {% block content %}
 
-<h2>View the launch schedule for all of {{location.name}} </h2>
+<h1>{{location.name}} </h1>
+<ul class="list-articles">
+    <li>
+        <div class="article-panel">
+            <p class="first">Country: {{location.country_code}}</p>
+        </div>
+        {{location.content|linebreaks}}
+    </li>
+</ul>
+
+<h2>View the launch schedule from {{location.name}} </h2>
 
  {% for p in location.rocket_set.all %}
     <li>

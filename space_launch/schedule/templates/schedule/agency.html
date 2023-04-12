@@ -2,6 +2,20 @@
 
 {% block content %}
 
+<h1>{{agency.name}} </h1>
+<ul class="list-articles">
+    <li>
+        <div class="article-panel">
+            <p class="first">Type: {{agency.type}}</p>
+        </div>
+        {% if agency.photo %}
+        <p><img class="img-article-left " src="{{agency.photo.url}} " style="width:300px;height:150px;"></p>
+        {% endif %}
+        {{agency.content|linebreaks}}
+    </li>
+</ul>
+
+
 <h2>View the launch schedule for all of {{agency.name}} </h2>
 
  {% for p in agency.rocket_set.all %}
