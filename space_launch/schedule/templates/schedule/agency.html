@@ -16,10 +16,10 @@
 </ul>
 
 
-<h2>View the launch schedule for all of {{agency.name}} </h2>
+<h2 align="center">View the launch schedule for all of {{agency.name}} launch vehicles</h2>
 
  {% for p in agency.rocket_set.all %}
-    <li>
+  <hr>
         <div class="article-panel">
             <p class="first">Launch Date: {{p.time_launch|date:"d-m-Y H:i:s"}}</p>
             <p class="last">Type of rocket: {{p.type}}</p>
@@ -33,7 +33,7 @@
         {% endautoescape %}
         <div class="clear"></div>
         <p class="link-read-post"><a href="{{ p.get_absolute_url }}">More about this launch</a></p>
-    </li>
+
 {% endfor %}
 
 {% endblock %}
