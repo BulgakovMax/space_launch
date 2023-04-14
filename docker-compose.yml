@@ -9,7 +9,6 @@ services:
       POSTGRES_PASSWORD: 1234
   web:
     build: .
-    command: ./entrypoint.sh
     volumes:
       - ./space_launch:/code
     ports:

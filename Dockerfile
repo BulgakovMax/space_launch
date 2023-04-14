@@ -18,6 +18,5 @@ COPY requirements.txt .
 RUN pip install -r requirements.txt
 
 COPY ./space_launch ./code
-COPY entrypoint.sh ./code
 
 CMD ["./entrypoint.sh"]
