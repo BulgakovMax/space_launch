@@ -14,12 +14,12 @@ class RocketSerializer(serializers.ModelSerializer):
 class LocationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Location
-        fields = ('id', 'name')
+        fields = ('id', 'name', 'country_code', 'content')
 
 
 class AgencySerializer(serializers.ModelSerializer):
     class Meta:
         model = Agency
-        fields = ('id', 'name')
+        fields = ('id', 'name', 'type', 'content')
 
 

@@ -50,6 +50,7 @@ class Location(models.Model):
     content = models.TextField(blank=True)
     country_code = models.CharField(max_length=5)
 
+
     def __str__(self):
         return self.name
 
