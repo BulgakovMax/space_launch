@@ -12,7 +12,6 @@ class Rocket(models.Model):
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL")
     content = models.TextField(blank=True)
     photo = models.ImageField(upload_to="photos/%Y/%m/%d/")
-    time_launch = models.DateTimeField(auto_now_add=True)
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
     is_published = models.BooleanField(default=True)
@@ -30,7 +29,7 @@ class Rocket(models.Model):
     class Meta:
         verbose_name = "Rocket"
         verbose_name_plural = "Rocket"
-        ordering = ['time_launch']
+        ordering = ['title']
 
 
 class Type(models.Model):
@@ -48,7 +47,7 @@ class Location(models.Model):
     name = models.CharField(max_length=100, db_index=True)
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL")
     content = models.TextField(blank=True)
-    country_code = models.CharField(max_length=5)
+    country_code = models.CharField(max_length=64)
 
 
     def __str__(self):

@@ -5,8 +5,6 @@
     {% for p in posts %}
     <li>
         <div class="article-panel">
-            <p class="first">Date of first flight: {{p.time_launch|date:"d-m-Y H:i:s"}}</p>
-            <br>
             <p class="first">Location: {{p.location}}</p>
             <p class="last">Type of rocket: {{p.type}}</p>
         </div>
