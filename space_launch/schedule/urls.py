@@ -8,6 +8,7 @@ urlpatterns = [
     path('addpage/', addpage, name='add_page'),
     path('rockets/', rockets, name='rockets'),
     path('launcher/', launcher_list, name='launcher_list'),
+    path('events/', events_list, name='events_list'),
     path('locations/', locations, name='locations'),
     path('locations/<slug:slug>/', show_location, name='location'),
     path('agencies/', agencies, name='agencies'),

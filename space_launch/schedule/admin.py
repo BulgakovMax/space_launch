@@ -39,11 +39,17 @@ class LauncherAdmin(admin.ModelAdmin):
     search_fields = ('title',)
 
 
+class EventAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name')
+    list_display_links = ('id', 'name')
+    search_fields = ('name',)
+
 
 admin.site.register(Rocket, RocketAdmin)
 admin.site.register(Type, TypeAdmin)
 admin.site.register(Location, LocationAdmin)
 admin.site.register(Agency, AgencyAdmin)
 admin.site.register(Launcher, LauncherAdmin)
+admin.site.register(Event, EventAdmin)
 
 

@@ -1,0 +1,18 @@
+{% extends 'schedule/base.html' %}
+
+{% block content %}
+<h1 align="center">Events list</h1>
+<ul>
+    {% for event in events %}
+        <li> <h3>{{ event.name }} </h3></li>
+        <div class="article-panel">
+            <p class="first">Date: {{event.date}}</p>
+            <br>
+            <p class="first">Location: {{event.location}}</p>
+        </div>
+        <p>  <img src="{{ event.feature_image }}" alt="{{ event.name }}"> </p>
+        <p>  - {{ event.description }}</p>
+        <hr>
+    {% endfor %}
+</ul>
+{% endblock %}

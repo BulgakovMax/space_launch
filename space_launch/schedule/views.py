@@ -11,7 +11,7 @@ from django.shortcuts import render
 
 from .forms import AddPostForm, RegisterUserForm, LoginUserForm
 from .utils import DataMixin
-from .models import Launcher, Rocket, Type
+from .models import Launcher, Rocket, Type, Event
 
 
 class ScheduleHome(DataMixin, ListView):
@@ -185,16 +185,8 @@ def next_launch(request):
 
     launches = response.json()['results']
 
-    # Calculate the difference between the current date and the next launch date
-    now = datetime.datetime.now(datetime.timezone.utc)
-    next_launch_date_str = launches[0]['net']
-    next_launch_date = datetime.datetime.fromisoformat(next_launch_date_str[:-1]).replace(tzinfo=datetime.timezone.utc)
-    difference = next_launch_date - now
-    difference_str = f"{difference.days} days, {difference.seconds // 3600} hours, {(difference.seconds // 60) % 60} minutes"
-
     context = {
         'launches': launches,
-        'difference': difference_str
     }
     return render(request, 'schedule/next_launch.html', context)
 
@@ -235,3 +227,48 @@ def launcher_list(request):
     # render the list of launchers in an HTML template
     context = {'launchers': launchers}
     return render(request, 'schedule/launcher.html', context)
+
+
+# def event():
+#     url = 'https://ll.thespacedevs.com/2.2.0/event/'
+#     response = requests.get(url)
+#     data = response.json()
+    
+#     for item in data['results']:
+#         events, created = Event.objects.get_or_create(
+#             id=item['id'],
+#             defaults={
+#                 'name': item['name'], 
+#                 # 'feature_image': item['feature_image'],
+#                 # 'type': item['type'],
+#                 # 'description': item['description'],
+#                 # 'updates': item['updates'], 
+#                 # 'location': item['location']
+#             }
+#         )
+
+#         events.name = item['name']
+#         print(events.name)
+#         # events.feature_image = item['feature_image']
+#         # events.type = item['type']
+#         # events.description = item['description']
+#         # events.updates = item['updates']
+#         # events.location = item['location']
+        
+#         events.save()
+
+
+# def events_list(request):
+
+#     event()
+
+#     events = Event.objects.all()
+
+#     context = {'events': events}
+#     return render(request, 'schedule/events.html', context)
+
+def events_list(request):
+    response = requests.get('https://ll.thespacedevs.com/2.2.0/event/')
+    events = response.json()['results']
+    context = {'events': events}
+    return render(request, 'schedule/events.html', context)

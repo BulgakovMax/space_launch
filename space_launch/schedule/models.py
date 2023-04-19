@@ -28,7 +28,7 @@ class Rocket(models.Model):
 
     class Meta:
         verbose_name = "Rocket"
-        verbose_name_plural = "Rocket"
+        verbose_name_plural = "Rockets"
         ordering = ['title']
 
 
@@ -78,7 +78,7 @@ class Agency(models.Model):
     
     class Meta:
         verbose_name = "Agency"
-        verbose_name_plural = "Agency"
+        verbose_name_plural = "Agencies"
         ordering = ['name']   
 
 
@@ -99,7 +99,27 @@ class Launcher(models.Model):
 
     class Meta:
         verbose_name = "Launcher"
-        verbose_name_plural = "Launcher"
+        verbose_name_plural = "Launchers"
         ordering = ['title']   
+
+
+class Event(models.Model):
+    name = models.CharField(max_length=255)
+    # feature_image = models.URLField(max_length = 200)
+    # type = models.CharField(max_length=255)
+    # updates = models.CharField(max_length=255)
+    # description = models.CharField(max_length=255)
+    # location = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('post', kwargs={'post_title': self.name})
+
+    class Meta:
+        verbose_name = "Event"
+        verbose_name_plural = "Events"
+        ordering = ['name']  
     
 

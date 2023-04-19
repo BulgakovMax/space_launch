@@ -5,10 +5,11 @@ register = template.Library()
 
 menu = [{'title': "About", 'url_name': 'about'},
         {'title': "Add rocket", 'url_name': 'add_page'},
-        {'title': "Agencies", 'url_name': 'agencies'},
+        {'title': "Agencies", 'url_name': 'agencies'}, 
+        {'title': "Events", 'url_name': 'events_list'},
+        {'title': "Launches", 'url_name': 'next_launch'},
         {'title': "Locations", 'url_name': 'locations'},
         {'title': "Rockets", 'url_name': 'home'},
-        {'title': "Next launch list", 'url_name': 'next_launch'},
         {'title': "Converter", 'url_name': 'convertor'},
         {'title': "Contacts", 'url_name': 'contacts'},
         {'title': "Log in", 'url_name': 'login'}
